@@ -1,23 +1,33 @@
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { scenarioState } from "@/states/scenarioState";
-import { mockScenario } from "@/mocks/scenario";
+import { navigationState } from "@/states/navigationState";
+import mockScenario from "@/scenarios/S_000.json";
 
 export const DebugMenu: React.FC = () => {
-  const [scenario, setScenario] = useRecoilState(scenarioState);
+  const [scenario, setScenario] = useAtom(scenarioState);
+  const [navigation, setNavigation] = useAtom(navigationState);
 
   return (
-    <ul className="fixed top-1 left-1 z-20 flex flex-col gap-2 bg-black bg-opacity-80 text-white text-xs p-2">
-      <li>currentLineIndex: {scenario.currentLineIndex}</li>
+    <ul className="absolute top-1 left-1 z-20 flex flex-col gap-2 bg-black bg-opacity-80 text-white text-xs p-2">
+      <li>scenarioId: {scenario.id}</li>
+      <li>
+        currentLineIndex: {scenario.currentLineIndex} / {scenario.lines.length - 1}
+      </li>
       <li>
         <button
-          onClick={() =>
+          onClick={() => {
             setScenario({
               ...scenario,
               ...mockScenario,
               currentCharacterIndex: -1,
               currentLineIndex: 0,
-            })
-          }
+              currentLine: scenario.lines[0],
+            });
+            setNavigation({
+              ...navigation,
+              isAutoPlay: false,
+            });
+          }}
         >
           Reset
         </button>

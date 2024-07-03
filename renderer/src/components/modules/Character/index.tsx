@@ -1,18 +1,19 @@
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { scenarioState } from "@/states/scenarioState";
 
-const width = 400;
+// TODO: 任意の数値を設定できるようにする
+const IMAGE_WIDTH = 400;
 
 export const Character: React.FC = () => {
-  const { characters, currentCharacterIndex } = useRecoilValue(scenarioState);
+  const { characters, currentCharacterIndex } = useAtomValue(scenarioState);
 
   const translateX = () => {
     if (currentCharacterIndex === -1) {
       return 0;
     }
-    const totalWidth = width * characters.filter((character) => character.isShow).length;
+    const totalWidth = IMAGE_WIDTH * characters.filter((character) => character.isShow).length;
     const flexboxCenter = totalWidth / 2;
-    const targetBoxCenter = width * currentCharacterIndex + width / 2;
+    const targetBoxCenter = IMAGE_WIDTH * currentCharacterIndex + IMAGE_WIDTH / 2;
     const translationX = flexboxCenter - targetBoxCenter;
     return translationX;
   };
@@ -26,10 +27,10 @@ export const Character: React.FC = () => {
         (character, i) =>
           character.isShow && (
             <div
-              className="relative flex flex-col justify-end min-h-screen transition-transform duration-500"
+              className="relative flex flex-col justify-end min-h-[100svh] transition-transform duration-500"
               style={{
-                minWidth: width,
-                maxWidth: width,
+                minWidth: IMAGE_WIDTH,
+                maxWidth: IMAGE_WIDTH,
                 transform: `scale(${i === currentCharacterIndex ? 1.1 : 1})`,
               }}
               key={i}

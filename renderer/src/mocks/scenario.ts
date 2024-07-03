@@ -1,23 +1,25 @@
 import { Scenario } from "@/types";
 
 export const mockScenario: Scenario = {
-  id: 1, // シナリオID. 現在機能しません
-  backgroundFile: "bg_01.png", // 背景画像のファイル名を指定
-  currentLineIndex: 0, // 現在のセリフ位置. 現在機能しません
+  id: "S_000", // FIXME: シナリオID. 現在機能しません
+  backgroundFile: "bg_01.webp", // 背景画像のファイル名を指定
+  currentLineIndex: 0, // FIXME: 現在のセリフ位置. 現在機能しません
   characters: [
     // キャラクター情報を配列で格納する
     // 増やした分だけキャラクターが表示される
     {
       index: 0, // キャラクターの番号. 0が左端です
       name: "キャラA", // キャラクターの名前
-      imageFile: "chara_01.png", // キャラクター画像のファイル名を指定
-      isShow: true, // 初期表示フラグ. 現在機能しません
+      imageFile: "chara_01.webp", // キャラクター画像のファイル名を指定
+      isShow: true, // FIXME: 初期表示フラグ. 現在機能しません
+      speakerId: 3, // voicevoxのspeakerIdを指定
     },
     {
       index: 1,
       name: "キャラB",
-      imageFile: "chara_02.png",
+      imageFile: "chara_02.webp",
       isShow: true,
+      speakerId: 2,
     },
   ],
   lines: [
@@ -40,31 +42,74 @@ export const mockScenario: Scenario = {
       index: 2,
       character: {
         index: 0,
-        imageFile: "chara_01.png", // キャラクターの画像を変更する場合、画像のファイル名を指定
+        imageFile: "chara_01.webp", // キャラクターの画像を変更する場合、画像のファイル名を指定
       },
       type: 1,
       text: "キャラクターのセリフ1",
     },
     {
       index: 3,
+      cutIn: {
+        imageFile: "cut_01.webp", // カットインを表示する場合、画像のファイル名を指定
+      },
+      type: 0,
+      text: "カットイン表示",
+    },
+    {
+      index: 4,
+      type: 0,
+      text: "カットイン非表示",
+    },
+    {
+      index: 5,
+      cutIn: {
+        imageFile: "cg_01.webp",
+        isFullScreen: true, // CG画像などフルスクリーンで表示する場合は有効化
+      },
+      type: 0,
+      text: "CG表示",
+    },
+    {
+      index: 6,
+      cutIn: {
+        imageFile: "cg_01.webp",
+        isFullScreen: true,
+      },
       character: {
         index: 1,
-        imageFile: "chara_02.png",
+      },
+      type: 1,
+      text: "CG中のキャラクターのセリフ",
+    },
+    {
+      index: 7,
+      character: {
+        index: 1,
+      },
+      type: 0,
+      text: "CG非表示",
+    },
+    {
+      index: 8,
+      character: {
+        index: 1,
+        imageFile: "chara_02.webp",
       },
       type: 1,
       text: 'キャラクターのセリフ2<br>改行<br><span style="font-size:24px">テキストの大きさ変更</span>',
     },
     {
-      index: 4,
+      index: 9,
       character: {
         index: 0,
-        imageFile: "chara_01.png",
+        name: "キャラA(真の姿)", // FIXME: キャラの名前を上書きできる. 現在機能しません
+        imageFile: "chara_01.webp",
       },
       type: 1,
       text: "キャラクターのセリフ3",
     },
     {
-      index: 5,
+      index: 10,
       type: 2,
       text: "次の選択肢から選んでください",
       choices: [

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/kokushin/exia/assets/4176300/d77508c6-76b3-4d83-9b77-675b27b1dfa4" width="240" alt="©Proxima Beta Pte. Limited ©SHIFT UP CORP.">
+  <img src="https://github.com/kokushin/exia/assets/4176300/f339f967-712e-4967-9de9-52962d8d74f6" width="240" alt="©Proxima Beta Pte. Limited ©SHIFT UP CORP.">
   <h1>Exia</h1>
   <b>Next.js and Electron based novel game engine.<br>
 Inspired by the UX/UI of “勝利の女神:NIKKE”.</b>
@@ -9,7 +9,7 @@ Inspired by the UX/UI of “勝利の女神:NIKKE”.</b>
 
 ## 🚧 重要事項
 
-Exia は現在開発中です。全体の進捗は 10% くらいです。<br>
+Exia は現在開発中です。全体の進捗は 20% くらいです。<br>
 [@kokushing](https://x.com/kokushing) をフォローして更新をお待ちください！
 
 ## 📝 概要
@@ -38,8 +38,8 @@ Google Chrome での閲覧を推奨します。
   - [x] システムメッセージ表示
   - [x] キャラクター画像の表示
   - [x] キャラクター切り替え
-  - [ ] カットイン画像表示
-  - [ ] CG 表示
+  - [x] カットイン画像表示
+  - [x] CG 表示
   - [ ] 選択肢表示/条件分岐(セリフ間ジャンプ)
   - [ ] シナリオ切り替え
   - [ ] スタート画面
@@ -49,20 +49,21 @@ Google Chrome での閲覧を推奨します。
   - [ ] シナリオフローチャート画面
   - [ ] サウンド(BGM/SE)出力
   - [ ] アニメーション再生
+  - [x] ローディング(画像キャッシュ)
 - ゲームプレーヤーの機能
   - [ ] データセーブ
   - [ ] データロード
-  - [ ] オート再生
+  - [x] オート再生
   - [ ] スキップ
   - [ ] ログ
   - [ ] コンフィグ
 - その他
   - [x] Windows/MacOS 向けアプリケーションコンパイル
   - [ ] 画面録画・書き出し機能
-  - [ ] VOICEVOX 連携
+  - [x] VOICEVOX 連携
   - [ ] 多言語対応(英語/中国語)
   - [ ] 専用 GUI エディタ
-  - [ ] 高速化(キャッシュ機構)実装
+  - [ ] 処理最適化・リファクタリング
   - [ ] 外部 API 連携(プラグイン)実装
 
 ## 🎮 動作確認
@@ -114,11 +115,17 @@ npm run dev
 
 `renderer/public/images/characters` の chara_01.png を上書きしてください。
 
+#### カットイン画像
+
+`renderer/public/images/cut_ins` の cut_01.png を上書きしてください。
+
 #### シナリオ
 
-`renderer/src/mocks/scenario.ts` をエディタで開き、編集して保存してください。
+`renderer/src/scenarios/S_000.json` をエディタで開き、編集して保存してください。
 
 ```ts
+// 構成と型の参考
+// renderer/src/mocks/scenario.ts
 export const mockScenario: Scenario = {
   id: 1, // シナリオID. 現在機能しません
   backgroundFile: "bg_01.png", // 背景画像のファイル名を指定
@@ -162,6 +169,11 @@ export const mockScenario: Scenario = {
       text: "キャラクターのセリフ1",
     },
     {
+      cutInFile: "cut_01.png", // カットインを表示する場合、画像のファイル名を指定
+      type: 0,
+      text: "カットイン表示",
+    },
+    {
       character: {
         index: 1,
         imageFile: "chara_02.png",
@@ -176,6 +188,42 @@ export const mockScenario: Scenario = {
 
 上記の仕様はモックアップ段階であり、今後変更される可能性が高いです。<br>
 設計に関してご提案がありましたら、お気軽に改善案をお送りください！
+
+## 🎙 VOICEVOX 連携
+
+仮実装ですが、[VOICEVOX](https://voicevox.hiroshiba.jp/) を使用して音声ファイルを書き出すことができます。
+
+VOICEVOX 本体をダウンロードして、ローカルサーバを起動します。
+
+`renderer/src/constants/index.ts` の CONFIG.VOICEVOX フラグを `true` にします。
+
+```js
+export const CONFIG = {
+  ...
+  VOICEVOX: true,
+};
+```
+
+`renderer/src/scenarios/S_000.json` の `characters` のオブジェクト内に `speakerId` を設定します。<br>
+※ VOICEVOX の speakerId を参照してください
+
+```js
+{
+  "index": 0,
+  "name": "キャラA",
+  "imageFile": "chara_01.webp",
+  "isShow": true,
+  "speakerId": 3 // ずんだもん(ノーマル)
+},
+```
+
+下記コマンドを実行すると、`public/audios/voices` 配下に wav ファイルを生成します。
+
+```bash
+npm run build-voice
+```
+
+キャラクターのセリフが設定されている箇所の音声が生成されます。
 
 ## 👨‍💻 開発者向けドキュメント
 
